@@ -4,4 +4,8 @@ trigger AccountTrigger on Account (before insert) {
     acc.Description = 'Iterate over the list of records';
    acc.Industry = 'Education';
   }
+    System.debug('This is a sample debug');
+    for(Account acc: Trigger.New){
+        System.debug('Account ID: ' + acc.Id);
+    }
 }
