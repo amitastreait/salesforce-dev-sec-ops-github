@@ -1,6 +1,6 @@
-name: Production Pipeline
+name: Dev Pipeline
 run-name: ${{ github.actor }} is running the Github Actions 🚀
-## Pipeline will be running mainly on 2 events most of time 
+## Pipeline will be running mainly on 2 events most of the time 
 ### push, pull_request
 on: [push, pull_request]
 
@@ -12,6 +12,12 @@ jobs:
     steps:
       - run: echo "This is my first Job"
         name: "First Job Message"
+      - name: Checkout Code
+        uses: actions/checkout@v4.1.7
+        with:
+          fetch-depth: 0
+      - name: npm install
+        run: npm install
   clean-up:
     runs-on: ubuntu-latest
     steps:
