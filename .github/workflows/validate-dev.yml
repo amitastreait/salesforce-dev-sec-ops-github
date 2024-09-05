@@ -18,6 +18,10 @@ jobs:
           fetch-depth: 0
       - name: npm install
         run: npm install
+      - name: Install Salesforce CLI
+        run: npm install @salesforce/cli --global
+      - name: Deploy the code to the Org
+        run: sf project deploy start -x manifest/package.xml -o muledreamin24
   clean-up:
     runs-on: ubuntu-latest
     steps:
