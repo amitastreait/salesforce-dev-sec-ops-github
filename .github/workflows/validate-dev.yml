@@ -24,11 +24,12 @@ jobs:
         ## Login OR Connect to Salesforce using JWT Token 
           ### 1. Connected Application and configure the User
                 ## SSL Ceriticate [OPENSSL]  
+      - name: Decrypt the server.key.enc file
+        run: openssl enc -nosalt -aes-256-cbc -d -in assets/server.key.enc -out assets/server.key -base64 -K ${{ secrets.KEY }} -iv ${{ secrets.IV }}
 
       - name: Authorize with Salesforce org
-        run: sf org login jwt --username deploymentuser@course.com.prod --jwt-key-file assets/server.key --client-id 3MVG9H_KVs6V9LiM7Y7c5ITSQXsdScQK0GviHUXJEQKzM.gX4Ui1yELw1hBDT86XI99Udx0I2CWwqhOWKxxrx --set-default --alias ci-org --instance-url https://login.salesforce.com
-      - name: Print User Information
-        run: sf org display user -o ci-org
+        run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file assets/server.key --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias ci-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
+      
   clean-up:
     runs-on: ubuntu-latest
     steps:
