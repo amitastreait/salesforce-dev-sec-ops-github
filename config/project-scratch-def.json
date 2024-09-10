@@ -1,6 +1,6 @@
 {
-  "orgName": "amitsingh company",
-  "edition": "Developer",
+  "orgName": "PantherSchools Company",
+  "edition": "Enterprise",
   "features": ["EnableSetPasswordInApi"],
   "settings": {
     "lightningExperienceSettings": {
