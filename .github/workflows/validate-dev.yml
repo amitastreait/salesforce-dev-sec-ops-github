@@ -18,10 +18,17 @@ jobs:
           fetch-depth: 0
       - name: npm install
         run: npm install
+        ## Install Saleforce CLI
       - name: Install Salesforce CLI
-        run: npm install @salesforce/cli --global
-      - name: Deploy the code to the Org
-        run: sf project deploy start -x manifest/package.xml -o muledreamin24
+        run: npm install @salesforce/cli --global 
+        ## Login OR Connect to Salesforce using JWT Token 
+          ### 1. Connected Application and configure the User
+                ## SSL Ceriticate [OPENSSL]  
+
+      - name: Authorize with Salesforce org
+        run: sf org login jwt --username deploymentuser@course.com.prod --jwt-key-file assets/server.key --client-id 3MVG9H_KVs6V9LiM7Y7c5ITSQXsdScQK0GviHUXJEQKzM.gX4Ui1yELw1hBDT86XI99Udx0I2CWwqhOWKxxrx --set-default --alias ci-org --instance-url https://login.salesforce.com
+      - name: Print User Information
+        run: sf org display user -o ci-org
   clean-up:
     runs-on: ubuntu-latest
     steps:
