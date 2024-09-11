@@ -6,10 +6,18 @@ on:
   push:
     paths:
       - 'force-app/**'
+    branches:
+      - feature/*
+      - bugfix/*
+      - hotfix/*
   pull_request:
     types: [opened, synchronize, reopened, edited]
     paths:
       - 'force-app/**'
+    branches:
+      - main
+      - uat
+      - develop
 
 jobs:
   build-and-deploy: ## Name of the Job
@@ -30,7 +38,6 @@ jobs:
         run: openssl enc -nosalt -aes-256-cbc -d -in ${{ secrets.ENCRYPTED_KEY_FILE }} -out ${{ secrets.JWT_KEY_FILE }} -base64 -K ${{ secrets.KEY }} -iv ${{ secrets.IV }}
       - name: Authorize with Salesforce org
         run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias ci-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
-
       - name: Deploy The Code to Salesforce
         run: sf project deploy start --source-dir force-app --target-org ci-org
       
