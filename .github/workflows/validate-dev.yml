@@ -7,8 +7,6 @@ on: [push, pull_request]
 jobs:
   build-and-deploy: ## Name of the Job
     runs-on: ubuntu-latest ## Github Hosted [Self Hosted]
-    ## Example - Develop an Apex trigger to count the total no of contacts under an account [job]
-    ## Example#2 - Deploy all the Apex Triggers and Classes developed as part of US-8834 [job]
     steps:
       - run: echo "This is my first Job"
         name: "First Job Message"
