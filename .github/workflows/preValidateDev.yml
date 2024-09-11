@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is running the Github Actions 🚀
 
 on:
   pull_request:
-    types: [opened, edited, closed]
+    types: [opened, edited, closed, reopened, synchronize ]
     branches:
       - develop
     paths:
