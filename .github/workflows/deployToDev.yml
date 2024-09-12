@@ -1,19 +1,18 @@
-name: Code Validation
+name: Deploy to Dev Sandbox
 run-name: ${{ github.actor }} is running the Github Actions 🚀
 
 on:
-  push:
+  pull_request:
+    types: [closed]
+    branches:
+      - develop
     paths:
       - 'force-app/**'
-    branches:
-      - feature/*
-      - bugfix/*
-      - hotfix/*
 
 jobs:
-  build-and-deploy: ## Name of the Job
-    runs-on: ubuntu-latest ## Github Hosted [Self Hosted]
-    environment: developer
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: devloper #developer
     steps:
       - run: echo "This is my first Job"
         name: "First Job Message"
@@ -31,12 +30,11 @@ jobs:
       - name: Authorize with Salesforce org
         run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias ci-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
       
-      - name: Validate The Code to Salesforce
-        ## Best is to have a separate Org for validation purpose
-        run: sf project deploy validate --source-dir force-app --target-org ci-org
-      
-      # - name: deploy
-      #  run: sf project deploy start --source-dir force-app --target-org ci-org
+      # - name: Validate The Code to Dev Sandbox
+      #  run: sf project deploy validate --source-dir force-app --target-org ci-org
+
+      - name: Deploy The Code to Dev Sandbox
+        run: sf project deploy start --source-dir force-app --target-org ci-org
       
   clean-up:
     runs-on: ubuntu-latest
