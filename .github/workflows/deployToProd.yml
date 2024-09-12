@@ -1,4 +1,4 @@
-name: Pre Validate to PROD
+name: Deploy to PROD
 run-name: ${{ github.actor }} is running the Github Actions 🚀
 
 on:
