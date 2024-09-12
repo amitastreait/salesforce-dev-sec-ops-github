@@ -12,7 +12,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: developer
+    environment: devloper #developer
     steps:
       - run: echo "This is my first Job"
         name: "First Job Message"
