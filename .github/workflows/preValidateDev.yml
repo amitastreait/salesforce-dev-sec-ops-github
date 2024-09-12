@@ -38,6 +38,7 @@ jobs:
       
   clean-up:
     runs-on: ubuntu-latest
+    needs: [build-and-deploy]
     steps:
       - run: echo "This is my second Job"
         name: "Print Message"
