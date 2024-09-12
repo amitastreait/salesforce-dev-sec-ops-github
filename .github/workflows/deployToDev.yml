@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is running the Github Actions 🚀
 
 on:
   pull_request:
-    types: [opened, edited, reopened, synchronize]
+    types: [closed]
     branches:
       - develop
     paths:
@@ -30,11 +30,11 @@ jobs:
       - name: Authorize with Salesforce org
         run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias ci-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
       
-      - name: Validate The Code to Dev Sandbox
-        run: sf project deploy preview --source-dir force-app --target-org ci-org
+      # - name: Validate The Code to Dev Sandbox
+      #  run: sf project deploy preview --source-dir force-app --target-org ci-org
 
-      #- name: Deploy The Code to Dev Sandbox
-      #  run: sf project deploy start --source-dir force-app --target-org ci-org
+      - name: Deploy The Code to Dev Sandbox
+        run: sf project deploy start --source-dir force-app --target-org ci-org
       
   clean-up:
     runs-on: ubuntu-latest
