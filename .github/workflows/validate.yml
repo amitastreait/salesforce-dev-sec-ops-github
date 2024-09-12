@@ -33,7 +33,7 @@ jobs:
       
       - name: Validate The Code to Salesforce
         ## Best is to have a separate Org for validation purpose
-        run: sf project deploy preview --source-dir force-app --target-org ci-org
+        run: sf project deploy validate --source-dir force-app --target-org ci-org
       
       # - name: deploy
       #  run: sf project deploy start --source-dir force-app --target-org ci-org
