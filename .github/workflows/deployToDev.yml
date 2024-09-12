@@ -1,4 +1,4 @@
-name: Pre Validate to Dev Sandbox
+name: Deploy to Dev Sandbox
 run-name: ${{ github.actor }} is running the Github Actions 🚀
 
 on:
