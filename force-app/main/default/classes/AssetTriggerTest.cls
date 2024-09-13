@@ -4,7 +4,7 @@ public with sharing class AssetTriggerTest {
     private static void insertAssetTest(){
         // Step 1: Create an Account
         Account acc = new Account();
-        acc.Name = 'Example Account';
+        acc.Name = 'PantherSchools.com';
         insert acc;
 
         // Step 2: Create a Contact and associate it with the Account

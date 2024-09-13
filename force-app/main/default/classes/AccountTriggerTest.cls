@@ -4,7 +4,7 @@ public with sharing class AccountTriggerTest {
     private static void insertAccountTest(){
         // Step 1: Create an Account
         Account acc = new Account();
-        acc.Name = 'Example Account';
+        acc.Name = 'PantherSchools.com';
         insert acc;
 
         System.debug('Account Created: ' + acc.Id);
