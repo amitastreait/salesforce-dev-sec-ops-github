@@ -22,7 +22,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: npm install
-        run: npm install
+        run: echo "running npm install"
         ## Install Saleforce CLI
       - name: Install Salesforce CLI
         run: npm install @salesforce/cli --global 
@@ -48,8 +48,14 @@ jobs:
         with:
           name: cli-scan-report
           path: reports/scan-reports.html
+
+      ## Upload the report results to codeql for process
+      - name: Upload SARIF file - Salesforce CLI Scan Report
+        id: upload-sarif-file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: reports/scan-reports.sarif
     
-        
       - name: Decrypt the server.key.enc file
         run: openssl enc -nosalt -aes-256-cbc -d -in ${{ secrets.ENCRYPTED_KEY_FILE }} -out ${{ secrets.JWT_KEY_FILE }} -base64 -K ${{ secrets.KEY }} -iv ${{ secrets.IV }}
       - name: Authorize with Salesforce org
