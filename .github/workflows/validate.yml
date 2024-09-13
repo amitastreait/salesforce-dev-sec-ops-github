@@ -11,11 +11,14 @@ on:
       - hotfix/*
 
 jobs:
-  build-and-deploy: ## Name of the Job
+  build-and-deploy: 
+
+    ## Permissions needed for security scan reports
     permissions:
-      contents: write
-      actions: read
-      security-events: write
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+
     runs-on: ubuntu-latest ## Github Hosted [Self Hosted]
     environment: developer
     steps:
