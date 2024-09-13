@@ -14,6 +14,7 @@ jobs:
   build-and-deploy: ## Name of the Job
     permissions:
       contents: read
+      actions: read
     runs-on: ubuntu-latest ## Github Hosted [Self Hosted]
     environment: developer
     steps:
