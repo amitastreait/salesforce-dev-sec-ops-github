@@ -30,6 +30,16 @@ jobs:
       - name: Install Salesforce Code Anayzer
         id: salesforce-cli-scanner
         run: sf plugins install @salesforce/sfdx-scanner
+
+      - name: Run Salesforce Code Anayzer Scan
+        id: code-analyzer
+        run: |
+          mkdir reports
+          echo "Folder is created"
+          sf scanner run --format html --target force-app/main/default/classes --engine pmd,pmd-appexchange --category Design,Best Practices, Code Style,Performance,Security,Documentation, Error Prone --outfile reports/scan-reports.html
+          echo "Starting the scan in sarif format"
+          sf scanner run --format sarif --target force-app/main/default/classes --engine pmd,pmd-appexchange --category Design,Best Practices, Code Style,Performance,Security,Documentation, Error Prone --outfile reports/scan-reports.sarif
+          echo "Scanning is Completed"
         
       - name: Decrypt the server.key.enc file
         run: openssl enc -nosalt -aes-256-cbc -d -in ${{ secrets.ENCRYPTED_KEY_FILE }} -out ${{ secrets.JWT_KEY_FILE }} -base64 -K ${{ secrets.KEY }} -iv ${{ secrets.IV }}
