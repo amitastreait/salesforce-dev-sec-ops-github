@@ -25,7 +25,12 @@ jobs:
         run: npm install
         ## Install Saleforce CLI
       - name: Install Salesforce CLI
-        run: npm install @salesforce/cli --global   
+        run: npm install @salesforce/cli --global 
+
+      - name: Install Salesforce Code Anayzer
+        id: salesforce-cli-scanner
+        run: sf plugins install @salesforce/sfdx-scanner
+        
       - name: Decrypt the server.key.enc file
         run: openssl enc -nosalt -aes-256-cbc -d -in ${{ secrets.ENCRYPTED_KEY_FILE }} -out ${{ secrets.JWT_KEY_FILE }} -base64 -K ${{ secrets.KEY }} -iv ${{ secrets.IV }}
       - name: Authorize with Salesforce org
