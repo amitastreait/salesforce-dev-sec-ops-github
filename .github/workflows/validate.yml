@@ -63,6 +63,25 @@ jobs:
           sarif_file: reports/scan-reports.sarif
           token: ${{ github.token }}
           category: my-analysis-tool
+
+      - name: PMD SCAN
+        id: pmd_scan
+        uses: pmd/pmd-github-action@v2 
+        with:
+          rulesets: 'pmd/ruleset.xml'
+      
+      - name: Fail build if there are violations
+        if: steps.pmd_scan.outputs.violations != 0
+        run: |
+          echo "PMD Violatons ${{steps.pmd_scan.outputs.violations}} "
+          echo "PMD outputs ${{toJSON(steps.pmd_scan.outputs)}} "
+          exit 1
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: pmd-report.sarif
+        
     
       - name: Decrypt the server.key.enc file
         run: openssl enc -nosalt -aes-256-cbc -d -in ${{ secrets.ENCRYPTED_KEY_FILE }} -out ${{ secrets.JWT_KEY_FILE }} -base64 -K ${{ secrets.KEY }} -iv ${{ secrets.IV }}

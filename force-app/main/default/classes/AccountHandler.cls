@@ -14,7 +14,8 @@ public with sharing class AccountHandler {
         insert acc;
     }
     public static void createRecords() {
-        System.debug('Hello');
+        String AccountName = 'pantherschools.com';
+        System.debug('Hello'); 
         /* Generate the code to create the Account Record using Async Apex*/
         // Check if the user has the necessary permissions to create the record
         if (!Schema.sObjectType.Account.isCreateable()) {
