@@ -1,14 +1,4 @@
-[![Code Validation](https://github.com/amitastreait/salesforce-dev-sec-ops-github/actions/workflows/validate.yml/badge.svg)](https://github.com/amitastreait/salesforce-dev-sec-ops-github/actions/workflows/validate.yml)
-
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=amitastreait_salesforce-dev-sec-ops-github&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=amitastreait_salesforce-dev-sec-ops-github)
-
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=amitastreait_salesforce-dev-sec-ops-github&metric=bugs)](https://sonarcloud.io/summary/new_code?id=amitastreait_salesforce-dev-sec-ops-github)
-
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=amitastreait_salesforce-dev-sec-ops-github&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=amitastreait_salesforce-dev-sec-ops-github)
-
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=amitastreait_salesforce-dev-sec-ops-github&metric=coverage)](https://sonarcloud.io/summary/new_code?id=amitastreait_salesforce-dev-sec-ops-github)
-
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=amitastreait_salesforce-dev-sec-ops-github&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=amitastreait_salesforce-dev-sec-ops-github)
+[![Code Validation](https://github.com/amitastreait/salesforce-dev-sec-ops-github/actions/workflows/validate.yml/badge.svg)](https://github.com/amitastreait/salesforce-dev-sec-ops-github/actions/workflows/validate.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=amitastreait_salesforce-dev-sec-ops-github&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=amitastreait_salesforce-dev-sec-ops-github) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=amitastreait_salesforce-dev-sec-ops-github&metric=bugs)](https://sonarcloud.io/summary/new_code?id=amitastreait_salesforce-dev-sec-ops-github) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=amitastreait_salesforce-dev-sec-ops-github&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=amitastreait_salesforce-dev-sec-ops-github) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=amitastreait_salesforce-dev-sec-ops-github&metric=coverage)](https://sonarcloud.io/summary/new_code?id=amitastreait_salesforce-dev-sec-ops-github) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=amitastreait_salesforce-dev-sec-ops-github&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=amitastreait_salesforce-dev-sec-ops-github)
 
 # Salesforce DX Project: Next Steps
 
