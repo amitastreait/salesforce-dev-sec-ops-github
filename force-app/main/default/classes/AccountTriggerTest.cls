@@ -6,5 +6,6 @@ public with sharing class AccountTriggerTest {
         Account acc = new Account();
         acc.Name = 'PantherSchools.com';
         insert acc;
+        System.debug('Account Created: ' + acc.Id);
     }
 }
