@@ -8,6 +8,5 @@ public with sharing class AccountTriggerTest {
         insert acc;
         System.debug('Account Created: ' + acc.Id);
         System.debug('Account Created: ' + acc.Id);
-        System.debug('Account Created: ' + acc.Id);
     }
 }
