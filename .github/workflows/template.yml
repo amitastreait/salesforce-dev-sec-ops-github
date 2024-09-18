@@ -95,8 +95,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          projectBaseDir: "force-app/main/default"
       
       - name: Fail build if there are violations
         if: steps.pmd_scan.outputs.violations != 0

@@ -66,6 +66,7 @@ public class SuperSortTest {
         Decimal assertValue = 1001;
         for(Opportunity o : opps) {
             System.debug('Opp value: ' + o.amount);
+            System.debug('Opp value: ' + o.amount);
             //System.assert(assertValue >= o.amount);
             assertValue = o.amount;
         }  
