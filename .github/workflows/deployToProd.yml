@@ -1,18 +1,18 @@
-name: Deploy to Dev Sandbox
+name: Deploy to PROD
 run-name: ${{ github.actor }} is running the Github Actions 🚀
 
 on:
   pull_request:
     types: [closed]
     branches:
-      - develop
+      - main
     paths:
       - 'force-app/**'
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: devloper #developer
+    environment: production #production
     steps:
       - run: echo "This is my first Job"
         name: "First Job Message"
@@ -30,11 +30,11 @@ jobs:
       - name: Authorize with Salesforce org
         run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias ci-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
       
-      # - name: Validate The Code to Dev Sandbox
-      #  run: sf project deploy validate --source-dir force-app --target-org ci-org
+      - name: Deployment to PROD
+        run: sf project deploy start --source-dir force-app --target-org ci-org
 
-      - name: Deploy The Code to Dev Sandbox
-        run: sf project deploy start --source-dir force-app --target-org ci-org --ignore-conflicts
+      #- name: Deploy The Code to Dev Sandbox
+      #  run: sf project deploy start --source-dir force-app --target-org ci-org
       
   clean-up:
     runs-on: ubuntu-latest

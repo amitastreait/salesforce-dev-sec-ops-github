@@ -27,6 +27,11 @@ node_modules/
 # Eslint cache
 .eslintcache
 
+AGENDA.md
+assets/dev/server.key
+assets/dev/files.md
+reports
+
 # MacOS system files
 .DS_Store
 
