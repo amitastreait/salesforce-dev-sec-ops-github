@@ -6,7 +6,24 @@ on:
       environment:
         required: true
         type: string
-    
+    secrets:
+      SONAR_TOKEN:
+        required: true
+      ENCRYPTED_KEY_FILE:
+        required: true
+      JWT_KEY_FILE:
+        required: true
+      KEY:
+        required: true
+      IV:
+        required: true
+      SF_CLIENT_ID:
+        required: true
+      SF_INSTANCE_URL:
+        required: true
+      SF_USERNAME:
+        required: true
+
 jobs:
   build:
     permissions:
