@@ -19,7 +19,7 @@ jobs:
       security-events: write
       actions: read
     with:
-      environment: uat
+      environment: developer
     secrets: inherit
       # SONAR_TOKEN : $${{secrets.SONAR_TOKEN}}
       # ENCRYPTED_KEY_FILE : $${{secrets.ENCRYPTED_KEY_FILE}}
