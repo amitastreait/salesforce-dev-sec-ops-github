@@ -14,3 +14,7 @@ jobs:
   build-and-deploy: 
     name: Deploy using Reusable Template
     uses: "./.github/workflows/template.yml"
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
