@@ -34,9 +34,11 @@ jobs:
     runs-on: ubuntu-latest ## Github Hosted [Self Hosted]
     environment: ${{ inputs.environment }}
     steps:
-      - name: "First Job Message"
+      - name: "Print the Information"
         run: |
+          echo ${{ github.event }}
           echo ${{ github.event.action }}
+          echo ${{ github.ref }}
         
       - name: Checkout Code
         uses: actions/checkout@v4.1.7
@@ -109,6 +111,17 @@ jobs:
       
       - name: Authorize with Salesforce org
         run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias ci-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
+
+      - name: Run Apex Unit Test for Org
+        run: |
+          sf apex run test --target-org ci-org --test-level RunSpecifiedTests --tests  AccountTriggerTest,AssetTriggerTest --code-coverage --result-format human -d ./ --wait 10
+
+      - name: Upload code coverage for Apex to Codecov.io
+        uses: codecov/codecov-action@v4
+        with:
+          flags: Apex
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       
       - name: Validate The Code to Salesforce
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}

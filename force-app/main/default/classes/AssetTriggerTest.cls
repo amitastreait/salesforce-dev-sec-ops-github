@@ -11,6 +11,7 @@ public with sharing class AssetTriggerTest {
         Contact con = new Contact();
         con.FirstName = 'John';
         con.LastName = 'Doe';
+        con.LastName = 'Doe';
         con.AccountId = acc.Id; // Linking the Contact to the Account
         insert con;
 
