@@ -109,7 +109,17 @@ jobs:
           sf apex run test --target-org ci-org --test-level RunLocalTests --code-coverage --result-format human -d ./coverage --wait 10
 
       - name: create coverage folder
-        run: mkdir coverage
+        run: |
+          
+          if [ -d "coverage" ]; then
+            echo "coverage exists. Deleting..."
+            rm -rf coverage
+          else
+            echo "$FOLDER does not exist."
+          fi
+
+          echo "Creating coverage..."
+          mkdir coverage
 
       ## Scan the code using SonarCloud
       - name: SonarCloud Scan
@@ -118,7 +128,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          
+
       - name: Upload code coverage for Apex to Codecov.io
         id: upload-coverage
         uses: codecov/codecov-action@v4
