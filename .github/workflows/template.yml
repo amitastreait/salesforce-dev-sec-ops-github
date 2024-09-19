@@ -34,10 +34,10 @@ jobs:
     runs-on: ubuntu-latest ## Github Hosted [Self Hosted]
     environment: ${{ inputs.environment }}
     steps:
-      - run: |
-          echo "This is my first Job"
-          echo ${{ toJson(github) }}
-        name: "First Job Message"
+      - name: "First Job Message"
+        run: |
+          echo ${{ github.event.action }}
+        
       - name: Checkout Code
         uses: actions/checkout@v4.1.7
         with:
@@ -119,7 +119,7 @@ jobs:
 
       - name: Deploy
         ## Best is to have a separate Org for validation purpose
-        if: ${{ github.event.pull_request.merged }} == true
+        if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
         run: |
           echo ${{ github.event.pull_request.merged }}
           sf project deploy start --source-dir force-app --target-org ci-org
