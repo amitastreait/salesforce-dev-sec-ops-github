@@ -10,6 +10,7 @@ public with sharing class AssetTriggerTest {
         // Step 2: Create a Contact and associate it with the Account
         Contact con = new Contact();
         con.FirstName = 'John';
+        con.FirstName = 'John';
         con.LastName = 'Doe';
         con.AccountId = acc.Id; // Linking the Contact to the Account
         insert con;
