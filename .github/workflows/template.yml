@@ -114,7 +114,7 @@ jobs:
 
       - name: Run Apex Unit Test for Org
         run: |
-          sf apex run test --target-org ci-org --test-level RunSpecifiedTests --tests  AccountTriggerTest,AssetTriggerTest --code-coverage --result-format human -d ./ --wait 10
+          sf apex run test --target-org ci-org --test-level RunLocalTests --code-coverage --result-format human -d ./ --wait 10
 
       - name: Upload code coverage for Apex to Codecov.io
         uses: codecov/codecov-action@v4
