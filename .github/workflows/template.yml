@@ -106,7 +106,7 @@ jobs:
 
       - name: Run Apex Unit Test for Org
         run: |
-          sf apex run test --target-org ci-org --test-level RunLocalTests --code-coverage --result-format human -d ./coverage --wait 10
+          sf apex run test --target-org ci-org --test-level RunLocalTests --code-coverage --result-format human -d ./ --wait 10
 
       - name: create coverage folder
         run: |
@@ -134,7 +134,6 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           flags: Apex
-          directory: ./coverage
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
