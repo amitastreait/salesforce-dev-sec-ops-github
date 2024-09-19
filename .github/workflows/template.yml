@@ -127,6 +127,7 @@ jobs:
       - name: Print Coverage output
         run: |
           echo ${{ steps.upload-coverage.outputs }}
+          echo ${{ toJSON(steps.upload-coverage.outputs) }}
       
       - name: Validate The Code to Salesforce
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
