@@ -14,6 +14,7 @@ public with sharing class AssetTriggerTest {
         con.LastName = 'Doe';
         con.AccountId = acc.Id; // Linking the Contact to the Account
         con.AccountId = acc.Id;
+        con.LastName = 'Doe';
         insert con;
 
         // Step 3: Create a Product (Product2)
