@@ -91,17 +91,6 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: pmd-report.sarif
-
-      - name: create coverage folder
-        run: mkdir coverage
-
-      ## Scan the code using SonarCloud
-      - name: SonarCloud Scan
-        id: sonar
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       
       - name: Fail build if there are violations
         if: steps.pmd_scan.outputs.violations != 0
@@ -119,6 +108,17 @@ jobs:
         run: |
           sf apex run test --target-org ci-org --test-level RunLocalTests --code-coverage --result-format human -d ./coverage --wait 10
 
+      - name: create coverage folder
+        run: mkdir coverage
+
+      ## Scan the code using SonarCloud
+      - name: SonarCloud Scan
+        id: sonar
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          
       - name: Upload code coverage for Apex to Codecov.io
         id: upload-coverage
         uses: codecov/codecov-action@v4
