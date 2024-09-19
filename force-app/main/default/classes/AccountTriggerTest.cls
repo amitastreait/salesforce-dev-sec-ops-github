@@ -1,5 +1,5 @@
 @IsTest
-public class AccountTriggerTest {
+public with sharing class AccountTriggerTest {
     @IsTest
     private static void insertAccountTest(){
         // Step 1: Create an Account

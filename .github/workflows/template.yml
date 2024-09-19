@@ -109,14 +109,16 @@ jobs:
         run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias ci-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
       
       - name: Validate The Code to Salesforce
-        ## if: ${{ github.event_name == 'pull_request' }}
-        if: ${{ github.event.pull_request.merged }} != true
+        if: ${{ github.event_name == 'pull_request' }}
+        # if: ${{ github.event_name == 'push' }}
         run: sf project deploy validate --source-dir force-app --target-org ci-org
 
       - name: Deploy
         ## Best is to have a separate Org for validation purpose
         if: ${{ github.event.pull_request.merged }} == true
-        run: sf project deploy start --source-dir force-app --target-org ci-org
+        run: |
+          echo ${{ github.event.pull_request.merged }}
+          sf project deploy start --source-dir force-app --target-org ci-org
 
 ## If the event is PR [opened, edited, reoped] - Validate the change
 ## If PR is closed then - deploy the change
