@@ -91,14 +91,6 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: pmd-report.sarif
-
-      ## Scan the code using SonarCloud
-      - name: SonarCloud Scan
-        id: sonar
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       
       - name: Fail build if there are violations
         if: steps.pmd_scan.outputs.violations != 0
@@ -116,12 +108,39 @@ jobs:
         run: |
           sf apex run test --target-org ci-org --test-level RunLocalTests --code-coverage --result-format human -d ./ --wait 10
 
+      - name: create coverage folder
+        run: |
+          
+          if [ -d "coverage" ]; then
+            echo "coverage exists. Deleting..."
+            rm -rf coverage
+          else
+            echo "$FOLDER does not exist."
+          fi
+
+          echo "Creating coverage..."
+          mkdir coverage
+
+      ## Scan the code using SonarCloud
+      - name: SonarCloud Scan
+        id: sonar
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
       - name: Upload code coverage for Apex to Codecov.io
+        id: upload-coverage
         uses: codecov/codecov-action@v4
         with:
           flags: Apex
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Print Coverage output
+        run: |
+          echo ${{ steps.upload-coverage.outputs }}
+          echo ${{ toJSON(steps.upload-coverage.outputs) }}
       
       - name: Validate The Code to Salesforce
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
