@@ -120,6 +120,8 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           flags: Apex
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       
       - name: Validate The Code to Salesforce
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
