@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is running the Github Actions 🚀
 
 on:
   pull_request:
-    types: [opened, edited, closed]
+    types: [opened, edited, reopened, synchronize]
     branches:
       - uat
     paths:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   build-and-deploy: 
-    name: Deploy using Reusable Template
+    name: Validate to UAT
     uses: "./.github/workflows/template.yml"
     permissions:
       contents: read
