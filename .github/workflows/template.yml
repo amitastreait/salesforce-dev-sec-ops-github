@@ -34,7 +34,9 @@ jobs:
     runs-on: ubuntu-latest ## Github Hosted [Self Hosted]
     environment: ${{ inputs.environment }}
     steps:
-      - run: echo "This is my first Job"
+      - run: |
+          echo "This is my first Job"
+          echo ${{ toJson(github) }}
         name: "First Job Message"
       - name: Checkout Code
         uses: actions/checkout@v4.1.7
@@ -111,7 +113,9 @@ jobs:
       - name: Validate The Code to Salesforce
         if: ${{ github.event_name == 'pull_request' }}
         # if: ${{ github.event_name == 'push' }}
-        run: sf project deploy validate --source-dir force-app --target-org ci-org
+        run: |
+          echo ${{ github.event_name }}
+          sf project deploy validate --source-dir force-app --target-org ci-org
 
       - name: Deploy
         ## Best is to have a separate Org for validation purpose
