@@ -92,6 +92,9 @@ jobs:
         with:
           sarif_file: pmd-report.sarif
 
+      - name: create coverage folder
+        run: mkdir coverage
+
       ## Scan the code using SonarCloud
       - name: SonarCloud Scan
         id: sonar

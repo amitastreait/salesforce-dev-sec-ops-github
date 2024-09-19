@@ -31,6 +31,7 @@ AGENDA.md
 assets/dev/server.key
 assets/dev/files.md
 reports
+coverage
 
 # MacOS system files
 .DS_Store
