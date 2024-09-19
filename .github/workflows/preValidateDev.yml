@@ -11,7 +11,7 @@ on:
 
 jobs:
   build-and-deploy: 
-    name: Deploy using Reusable Template
+    name: Pre Validate Dev
     uses: "./.github/workflows/template.yml"
     permissions:
       contents: read

@@ -1,22 +1,22 @@
-name: Deploy to Dev Sandbox
+name: Deploy to UAT Sandbox
 run-name: ${{ github.actor }} is running the Github Actions 🚀
 
 on:
   pull_request:
-    types: [closed] #closed --> closed/merged
+    types: [closed]
     branches:
-      - develop
+      - uat
     paths:
       - 'force-app/**'
 
 jobs:
   build-and-deploy: 
-    name: Deploy to Dev Sandbox
+    name: Deploy to UAT
     uses: "./.github/workflows/template.yml"
     permissions:
       contents: read
       security-events: write
       actions: read
     with:
-      environment: developer
+      environment: uat
     secrets: inherit
