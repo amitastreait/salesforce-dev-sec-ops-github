@@ -6,6 +6,6 @@ public with sharing class AssetTriggerHelper {
 		flush();
     }
     public static void flush() {
-
+      System.System.debug('Test');
     }
 }
