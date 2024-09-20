@@ -59,9 +59,11 @@ jobs:
         run: |
           mkdir reports
           echo "Folder is created"
-          sf scanner run --format html --target force-app/main/default/classes --engine pmd,pmd-appexchange --category Design,Best Practices, Code Style,Performance,Security,Documentation, Error Prone --outfile reports/scan-reports.html
+          
+          sf scanner run --format html --target force-app/main/default/classes --engine pmd,pmd-appexchange --category Design,Best Practices, Code Style,Performance,Security,Documentation, Error Prone --outfile reports/scan-reports.html --severity-threshold=3 
           echo "Starting the scan in sarif format"
-          sf scanner run --format sarif --target force-app/main/default/classes --engine pmd,pmd-appexchange --category Design,Best Practices, Code Style,Performance,Security,Documentation, Error Prone --outfile reports/scan-reports.sarif
+          
+          sf scanner run --format sarif --target force-app/main/default/classes --engine pmd,pmd-appexchange --category Design,Best Practices, Code Style,Performance,Security,Documentation, Error Prone --outfile reports/scan-reports.sarif --severity-threshold=3 
           echo "Scanning is Completed"
       
       ## Upload the report results as artifacts
@@ -107,6 +109,26 @@ jobs:
       - name: Run the Apex Test Classes
         run: |
           sf apex run test --target-org ci-org --code-coverage --result-format human -d ./ --wait 10
+
+      ## Check the code coverage -- START
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+
+      - name: Run Apex Coverage Check
+        run: |
+          python check_coverage.py
+
+      - name: Fail the build if code coverage is less than 80%
+        if: failure()
+        run: echo "Build failed due to low code coverage"
+      
+      ## Check the code coverage -- END
 
       ## Scan the code using SonarCloud
       - name: SonarCloud Scan
