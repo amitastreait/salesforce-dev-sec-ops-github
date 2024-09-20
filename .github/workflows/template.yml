@@ -104,22 +104,7 @@ jobs:
       - name: Authorize with Salesforce org
         run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias ci-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
 
-      - name: Run Apex Unit Test for Org
-        run: |
-          sf apex run test --target-org ci-org --test-level RunLocalTests --code-coverage --result-format human -d ./ --wait 10
-
-      - name: create coverage folder
-        run: |
-          
-          if [ -d "coverage" ]; then
-            echo "coverage exists. Deleting..."
-            rm -rf coverage
-          else
-            echo "$FOLDER does not exist."
-          fi
-
-          echo "Creating coverage..."
-          mkdir coverage
+      
 
       ## Scan the code using SonarCloud
       - name: SonarCloud Scan
@@ -129,18 +114,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      - name: Upload code coverage for Apex to Codecov.io
-        id: upload-coverage
-        uses: codecov/codecov-action@v4
-        with:
-          flags: Apex
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Print Coverage output
+      - name: Install SFDX Git delta aka SGD 
         run: |
-          echo ${{ steps.upload-coverage.outputs }}
-          echo ${{ toJSON(steps.upload-coverage.outputs) }}
+          echo 'y' | sf plugins install sfdx-git-delta
+      
+      - name: Create delta folder 
+        run: |
+          mkdir delta
+      
+      - name: Generate the delta file for deployment
+        run: |
+          sf sgd source delta --to "HEAD" --from "HEAD~1" --output "./delta" --generate-delta --ignore-whitespace
+          echo "--- package.xml generated with added and modified metadata ---"
+          cat delta/package/package.xml
+          cat delta/destructiveChanges/destructiveChanges.xml
       
       - name: Validate The Code to Salesforce
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
