@@ -8,7 +8,7 @@ def calculate_coverage(file_path):
 
     total_lines = 0
     covered_lines = 0
-    coverage_threshold = 101
+    coverage_threshold = 80
     failed_classes = []
 
     # Coverage for each class
@@ -34,7 +34,7 @@ def calculate_coverage(file_path):
 
     # If there are any failed classes, print them and exit with code 1
     if failed_classes:
-        print("\nBuild Failed! The following classes have less than 80% code coverage:")
+        print(f"\nBuild Failed! The following classes have less than {coverage_threshold}% code coverage:")
         for class_name, coverage in failed_classes:
             print(f"  - {class_name}: {coverage:.2f}%")
         sys.exit(1)
