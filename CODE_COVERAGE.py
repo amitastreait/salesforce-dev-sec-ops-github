@@ -14,11 +14,8 @@ def calculate_coverage(file_path):
     # Coverage for each class
     for class_coverage in data:
         class_name = class_coverage['name']
-        class_total_lines = class_coverage['totalLines']
-        class_covered_lines = class_coverage['totalCovered']
+        class_coverage_percentage = class_coverage['coveredPercent']  # Use coveredPercent directly
         
-        # Calculate coverage for the current class
-        class_coverage_percentage = (class_covered_lines / class_total_lines) * 100
         print(f"Class: {class_name}, Coverage: {class_coverage_percentage:.2f}%")
         
         # Check if the coverage is below the threshold
@@ -26,11 +23,11 @@ def calculate_coverage(file_path):
             failed_classes.append((class_name, class_coverage_percentage))
         
         # Accumulate for overall coverage
-        total_lines += class_total_lines
-        covered_lines += class_covered_lines
+        total_lines += class_coverage['totalLines']  # Assuming totalLines is still needed
+        covered_lines += class_coverage['totalCovered']  # Assuming totalCovered is still needed
 
-    # Calculate overall coverage percentage
-    overall_coverage = (covered_lines / total_lines) * 100
+    # Calculate overall coverage percentage if needed
+    overall_coverage = (covered_lines / total_lines) * 100 if total_lines > 0 else 0
 
     # If there are any failed classes, print them and exit with code 1
     if failed_classes:
@@ -43,5 +40,5 @@ def calculate_coverage(file_path):
 
 # Main method that runs automatically
 if __name__ == "__main__":
-    file_path = 'test-result-codecoverage.json'  # Replace with your actual file path
+    file_path = 'coverage/test-result-codecoverage.json'  # Replace with your actual file path
     calculate_coverage(file_path)
