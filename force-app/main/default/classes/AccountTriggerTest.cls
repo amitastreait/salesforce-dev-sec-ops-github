@@ -6,7 +6,6 @@ public with sharing class AccountTriggerTest {
         Account acc = new Account();
         acc.Name = 'PantherSchools.com';
         //insert acc;
-        Account acc = new Account();
         acc.Name = 'PantherSchools.com'; 
         insert acc;
         acc.Name = 'PantherSchools.com';

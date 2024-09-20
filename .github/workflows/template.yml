@@ -128,15 +128,38 @@ jobs:
           echo "--- package.xml generated with added and modified metadata ---"
           cat delta/package/package.xml
           cat delta/destructiveChanges/destructiveChanges.xml
+
+      - name: Validate Pre Destructive Changes
+        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+        run: |
+          if grep -q '<types>' .delta/package/destructiveChanges.xml ; then
+            echo "---- validating added and modified metadata ----"
+          else
+            echo "---- No changes to validate ----"
+          fi
       
       - name: Validate The Code to Salesforce
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
-        # if: ${{ github.event_name == 'push' }}
         run: |
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
           echo ${{ github.event.pull_request.merged }}
-          sf project deploy validate --source-dir delta/force-app --target-org ci-org
+
+          if grep -q '<types>' .delta/package/package.xml ; then
+            echo "---- validating added and modified metadata ----"
+            sf project deploy validate --source-dir delta/force-app --target-org ci-org
+          else
+            echo "---- No changes to validate ----"
+          fi
+
+      - name: Deploy Pre Destructive Changes
+        if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
+        run: |
+          if grep -q '<types>' .delta/package/destructiveChanges.xml ; then
+            echo "---- deploying added and modified metadata ----"
+          else
+            echo "---- No changes to validate ----"
+          fi
 
       - name: Deploy
         ## Best is to have a separate Org for validation purpose
@@ -145,7 +168,13 @@ jobs:
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
           echo ${{ github.event.pull_request.merged }}
-          sf project deploy start --source-dir delta/force-app --target-org ci-org
+          
+          if grep -q '<types>' .delta/package/package.xml ; then
+            echo "---- Deploying added and modified metadata ----"
+            sf project deploy start --source-dir delta/force-app --target-org ci-org
+          else
+            echo "---- No changes to deploy ----"
+          fi
 
 ## If the event is PR [opened, edited, reoped] - Validate the change
 ## If PR is closed then - deploy the change
