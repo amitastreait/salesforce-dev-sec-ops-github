@@ -104,7 +104,9 @@ jobs:
       - name: Authorize with Salesforce org
         run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias ci-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
 
-      
+      - name: Run the Apex Test Classes
+        run: |
+          sf apex run test --target-org ci-org --code-coverage --result-format human -d ./ --wait 10
 
       ## Scan the code using SonarCloud
       - name: SonarCloud Scan
@@ -113,6 +115,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      
+      - name: Upload code coverage for Apex to Codecov.io
+        id: upload-coverage
+        uses: codecov/codecov-action@v4
+        with:
+          flags: Apex
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Install SFDX Git delta aka SGD 
         run: |
