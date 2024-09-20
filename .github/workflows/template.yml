@@ -124,7 +124,7 @@ jobs:
       
       - name: Generate the delta file for deployment
         run: |
-          sf sgd source delta --to "HEAD" --from "HEAD~1" --output "./delta" --generate-delta --ignore-whitespace
+          sf sgd source delta --to "HEAD" --from "HEAD~1" --output "./delta" --generate-delta --ignore-whitespace --ignore .sgdignore
           echo "--- package.xml generated with added and modified metadata ---"
           cat delta/package/package.xml
           cat delta/destructiveChanges/destructiveChanges.xml
@@ -132,7 +132,7 @@ jobs:
       - name: Validate Pre Destructive Changes
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
         run: |
-          if grep -q '<types>' .delta/package/destructiveChanges.xml ; then
+          if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
             echo "---- validating added and modified metadata ----"
           else
             echo "---- No changes to validate ----"
@@ -145,7 +145,7 @@ jobs:
           echo ${{ github.event.action }}
           echo ${{ github.event.pull_request.merged }}
 
-          if grep -q '<types>' .delta/package/package.xml ; then
+          if grep -q '<types>' delta/package/package.xml ; then
             echo "---- validating added and modified metadata ----"
             sf project deploy validate --source-dir delta/force-app --target-org ci-org
           else
@@ -155,7 +155,7 @@ jobs:
       - name: Deploy Pre Destructive Changes
         if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
         run: |
-          if grep -q '<types>' .delta/package/destructiveChanges.xml ; then
+          if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
             echo "---- deploying added and modified metadata ----"
           else
             echo "---- No changes to validate ----"
@@ -169,7 +169,7 @@ jobs:
           echo ${{ github.event.action }}
           echo ${{ github.event.pull_request.merged }}
           
-          if grep -q '<types>' .delta/package/package.xml ; then
+          if grep -q '<types>' delta/package/package.xml ; then
             echo "---- Deploying added and modified metadata ----"
             sf project deploy start --source-dir delta/force-app --target-org ci-org
           else
