@@ -34,6 +34,12 @@ reports
 coverage
 delta
 
+## Ignore assets file
+assets/uat/server.csr
+assets/uat/server.crt
+assets/uat/server.key
+assets/uat/server.pass.key
+
 # MacOS system files
 .DS_Store
 

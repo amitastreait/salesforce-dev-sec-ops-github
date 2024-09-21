@@ -158,7 +158,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.python.coverage.reportPaths=test-result-codecoverage.json
+            -Dsonar.apex.coverage.reportPath=test-result-codecoverage.json
       
       - name: Upload code coverage for Apex to Codecov.io
         id: upload-coverage
