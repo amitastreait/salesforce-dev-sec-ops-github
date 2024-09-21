@@ -116,7 +116,7 @@ jobs:
 
       - name: Run the Apex Test Classes
         run: |
-          sf apex run test --target-org ci-org --code-coverage --result-format human -d ./ --wait 10
+          sf apex run test --target-org ci-org --test-level RunLocalTests --code-coverage --result-format human -d ./ --wait 10
 
       ## Check the code coverage -- START
       - name: Set up Python
