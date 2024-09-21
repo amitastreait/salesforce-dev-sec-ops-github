@@ -27,6 +27,19 @@ node_modules/
 # Eslint cache
 .eslintcache
 
+AGENDA.md
+assets/dev/server.key
+assets/dev/files.md
+reports
+coverage
+delta
+
+## Ignore assets file
+assets/uat/server.csr
+assets/uat/server.crt
+assets/uat/server.key
+assets/uat/server.pass.key
+
 # MacOS system files
 .DS_Store
 
@@ -43,3 +56,7 @@ $RECYCLE.BIN/
 **/__pycache__/
 **/.venv/
 **/venv/
+
+## Salesforce Scripts
+scripts/
+MD_README.md

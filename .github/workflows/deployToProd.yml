@@ -1,0 +1,22 @@
+name: Deploy to PROD
+run-name: ${{ github.actor }} is running the Github Actions 🚀
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+    paths:
+      - 'force-app/**'
+
+jobs:
+  build-and-deploy: 
+    name: Deploy to Prod
+    uses: "./.github/workflows/template.yml"
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    with:
+      environment: production
+    secrets: inherit

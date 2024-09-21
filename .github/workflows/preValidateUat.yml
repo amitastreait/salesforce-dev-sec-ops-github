@@ -1,0 +1,22 @@
+name: Pre Validate to UAT Sandbox
+run-name: ${{ github.actor }} is running the Github Actions 🚀
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+    branches:
+      - uat
+    paths:
+      - 'force-app/**'
+
+jobs:
+  build-and-deploy: 
+    name: Validate to UAT
+    uses: "./.github/workflows/template.yml"
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    with:
+      environment: uat
+    secrets: inherit

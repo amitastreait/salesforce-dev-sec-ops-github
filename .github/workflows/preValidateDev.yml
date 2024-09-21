@@ -1,0 +1,22 @@
+name: Pre Validate to Dev Sandbox
+run-name: ${{ github.actor }} is running the Github Actions 🚀
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+    branches:
+      - develop
+    paths:
+      - 'force-app/**'
+
+jobs:
+  build-and-deploy: 
+    name: Pre Validate Dev
+    uses: "./.github/workflows/template.yml"
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    with:
+      environment: developer
+    secrets: inherit

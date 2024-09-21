@@ -1,0 +1,22 @@
+name: Deploy to Dev Sandbox
+run-name: ${{ github.actor }} is running the Github Actions 🚀
+
+on:
+  pull_request:
+    types: [closed] #closed --> closed/merged
+    branches:
+      - develop
+    paths:
+      - 'force-app/**'
+
+jobs:
+  build-and-deploy: 
+    name: Deploy to Dev Sandbox
+    uses: "./.github/workflows/template.yml"
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    with:
+      environment: developer
+    secrets: inherit

@@ -3,7 +3,7 @@ trigger AccountTrigger on Account (before insert) {
     for(Account ACC: Trigger.New){
       acc.Description = 'Iterate over the list of records';
       acc.Industry = 'Education';
-      acc.Active__c = 'Yes';
+      //acc.Active__c = 'Yes';
       acc.Fax = '9874563210';
     }
     System.debug('This is a sample debug');
