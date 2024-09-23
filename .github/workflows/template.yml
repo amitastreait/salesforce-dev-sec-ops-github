@@ -161,6 +161,7 @@ jobs:
         with:
           args: >
             -Dsonar.apex.coverage.reportPath=test-result-codecoverage.json
+            -Dsonar.verbose=true
       
       - name: Upload code coverage for Apex to Codecov.io
         id: upload-coverage
