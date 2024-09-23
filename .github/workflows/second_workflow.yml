@@ -22,7 +22,7 @@ jobs:
         id: files
         run: |
           # Get the list of modified files
-          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }})
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.head.sha }} ${{ github.sha }})
           echo "changed_files=$CHANGED_FILES" >> $GITHUB_ENV
 
       # Filter only Apex class files (ending with .cls)
