@@ -1,7 +1,10 @@
 # .github/workflows/first_workflow.yml
 name: First Workflow
 
-on: [push]
+on: 
+  push:
+    branches:
+      - main
 
 jobs: 
   build:
