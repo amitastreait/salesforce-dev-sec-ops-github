@@ -1,5 +1,4 @@
-# .github/workflows/second_workflow.yml
-name: Second Workflow
+name: Detect Modified Apex and Test Classes
 
 on:
   workflow_run:
@@ -8,8 +7,48 @@ on:
       - completed
 
 jobs:
-  deploy:
+  check_apex_and_test_classes:
     runs-on: ubuntu-latest
-    steps: 
-    - name: Deploy
-      run: echo "Deploying the project..."
+
+    steps:
+      # Checkout the repository code
+      - name: Checkout Code
+        uses: actions/checkout@v4.1.7
+        with:
+          fetch-depth: 0
+
+      # Get the list of modified files in the pull request
+      - name: Get changed files
+        id: files
+        run: |
+          # Get the list of modified files
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }})
+          echo "changed_files=$CHANGED_FILES" >> $GITHUB_ENV
+
+      # Filter only Apex class files (ending with .cls)
+      - name: Filter modified Apex classes
+        id: apex_classes
+        run: |
+          # Filtering only .cls files (Apex classes)
+          APEX_CLASSES=$(echo "$CHANGED_FILES" | grep -E '\.cls$')
+          echo "apex_classes=$APEX_CLASSES" >> $GITHUB_ENV
+
+      # Filter only Apex test classes (ending with Test.cls)
+      - name: Filter modified Apex test classes
+        id: apex_test_classes
+        run: |
+          # Filtering only test classes (ending with Test.cls)
+          APEX_TEST_CLASSES=$(echo "$APEX_CLASSES" | grep -E 'Test\.cls$')
+          echo "apex_test_classes=$APEX_TEST_CLASSES" >> $GITHUB_ENV
+
+      # Check if any Apex test class files are modified
+      - name: Check for modified Apex test classes
+        if: env.apex_test_classes != ''
+        run: |
+          echo "The following Apex test classes were modified:"
+          echo "$APEX_TEST_CLASSES"
+          
+          # Optionally run some commands or scripts for these test classes
+          # For example: running tests or deployment tasks for test classes
+        env:
+          APEX_TEST_CLASSES: ${{ env.apex_test_classes }}
