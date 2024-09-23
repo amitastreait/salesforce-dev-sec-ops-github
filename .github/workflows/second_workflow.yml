@@ -1,0 +1,15 @@
+# .github/workflows/second_workflow.yml
+name: Second Workflow
+
+on:
+  workflow_run:
+    workflows: ["First Workflow"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps: 
+    - name: Deploy
+      run: echo "Deploying the project..."

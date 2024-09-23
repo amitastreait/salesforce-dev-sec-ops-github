@@ -112,11 +112,13 @@ jobs:
         run: openssl enc -nosalt -aes-256-cbc -d -in ${{ secrets.ENCRYPTED_KEY_FILE }} -out ${{ secrets.JWT_KEY_FILE }} -base64 -K ${{ secrets.KEY }} -iv ${{ secrets.IV }}
       
       - name: Authorize with Salesforce org
-        run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias ci-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
+        run: |
+          echo ${{vars.ORG_URL}}
+          sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias ci-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
 
       - name: Run the Apex Test Classes
         run: |
-          sf apex run test --target-org ci-org --code-coverage --result-format human -d ./ --wait 10
+          sf apex run test --target-org ci-org --test-level RunLocalTests --code-coverage --result-format human -d ./ --wait 10
 
       ## Check the code coverage -- START
       - name: Set up Python
@@ -211,6 +213,7 @@ jobs:
         run: |
           if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
             echo "---- deploying added and modified metadata ----"
+            sf project deploy validate --target-org ci-org --pre-destructive-changes delta/destructiveChanges/destructiveChanges.xml --manifest delta/destructiveChanges/package.xml
           else
             echo "---- No changes to validate ----"
           fi
@@ -239,3 +242,11 @@ jobs:
     steps:
       - run: echo "This is my second Job"
         name: "Print Message"
+
+  post-cleanup:
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Print Info
+        run: |
+          echo "This will be used for cleanup purpose"
