@@ -2,7 +2,12 @@
 name: First Workflow
 
 on: 
-  push:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
     branches:
       - main
 
