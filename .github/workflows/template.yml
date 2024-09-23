@@ -213,6 +213,7 @@ jobs:
         run: |
           if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
             echo "---- deploying added and modified metadata ----"
+            sf project deploy validate --target-org ci-org --pre-destructive-changes delta/destructiveChanges/destructiveChanges.xml --manifest delta/destructiveChanges/package.xml
           else
             echo "---- No changes to validate ----"
           fi
@@ -241,3 +242,11 @@ jobs:
     steps:
       - run: echo "This is my second Job"
         name: "Print Message"
+
+  post-cleanup:
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Print Info
+        run: |
+          echo "This will be used for cleanup purpose"
