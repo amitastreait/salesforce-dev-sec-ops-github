@@ -67,7 +67,7 @@ jobs:
           mkdir reports
           echo "Folder is created"
           
-          sf scanner run --format html --target force-app/main/default/classes --engine pmd,pmd-appexchange --category Design,Best Practices, Code Style,Performance,Security,Documentation, Error Prone --outfile reports/scan-reports.html  --severity-threshold=3
+          sf scanner run --format html --target force-app/main/default/classes --engine pmd,pmd-appexchange --category Design,Best Practices, Code Style,Performance,Security,Documentation, Error Prone --outfile reports/scan-reports.html
           # echo "Starting the scan in sarif format"
           
           # sf scanner run --format sarif --target force-app/main/default/classes --engine pmd,pmd-appexchange --category Design,Best Practices, Code Style,Performance,Security,Documentation, Error Prone --outfile reports/scan-reports.sarif --severity-threshold=3 
@@ -76,6 +76,7 @@ jobs:
       
       ## Upload the report results as artifacts
       - name: Upload a Salesforce CLI Scan Report
+        if: always()
         id: upload-reports
         uses: actions/upload-artifact@v4.4.0
         with:
@@ -120,7 +121,15 @@ jobs:
         run: |
           sf apex run test --target-org ci-org --test-level RunLocalTests --code-coverage --result-format human -d ./ --wait 10
 
-      
+      ## Check the code coverage -- START
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Run Apex Coverage Check
+        run: |
+          python CODE_COVERAGE.py
 
       ## Scan the code using SonarCloud
       - name: SonarCloud Scan
