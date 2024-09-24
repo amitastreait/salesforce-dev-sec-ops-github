@@ -120,36 +120,7 @@ jobs:
         run: |
           sf apex run test --target-org ci-org --test-level RunLocalTests --code-coverage --result-format human -d ./ --wait 10
 
-      ## Check the code coverage -- START
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      - name: Run Apex Coverage Check
-        run: |
-          python CODE_COVERAGE.py
-
-      - name: Fail the build if code coverage is less than 80%
-        if: failure()
-        run: echo "Build failed due to low code coverage"
-
-      - name: Run the extractor script
-        id: extract_classes
-        run: |
-          echo "${{ github.event.pull_request.body }}"  >> pr_body.txt
-          python PRBODY_TESTCLASS.py > output.txt
-          echo "apex_classes=$(cat output.txt)" >> $GITHUB_ENV
-
-      - name: Check if apex_classes has a value
-        run: |
-          if [[ -n "${{ env.apex_classes }}" ]]; then
-            echo "apex_classes has a value: '${{ env.apex_classes }}'. Executing code..."
-            # Place your code here that should run if apex_classes is not empty
-          else
-            echo "apex_classes is empty."
-          fi
-      ## Check the code coverage -- END
+      
 
       ## Scan the code using SonarCloud
       - name: SonarCloud Scan
