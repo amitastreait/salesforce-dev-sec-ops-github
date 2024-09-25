@@ -187,7 +187,7 @@ jobs:
         run: |
           if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
             echo "---- validating Destructive Changes ----"
-            sf project deploy validate --target-org ci-org --pre-destructive-changes delta/destructiveChanges/destructiveChanges.xml --manifest delta/destructiveChanges/package.xml
+            sf project deploy validate --target-org ci-org --pre-destructive-changes delta/destructiveChanges/destructiveChanges.xml --manifest delta/destructiveChanges/package.xml --wait 10
           else
             echo "---- No changes to validate ----"
           fi
@@ -201,7 +201,7 @@ jobs:
 
           if grep -q '<types>' delta/package/package.xml ; then
             echo "---- validating added and modified metadata ----"
-            sf project deploy validate --source-dir delta/force-app --target-org ci-org --test-level RunSpecifiedTests --tests ${{ env.apex_classes }}
+            sf project deploy validate --source-dir delta/force-app --target-org ci-org --test-level RunSpecifiedTests --tests ${{ env.apex_classes }} --wait 10
           else
             echo "---- No changes to validate ----"
           fi
@@ -215,7 +215,7 @@ jobs:
 
           if grep -q '<types>' delta/package/package.xml ; then
             echo "---- validating added and modified metadata ----"
-            sf project deploy validate --source-dir delta/force-app --target-org ci-org
+            sf project deploy validate --source-dir delta/force-app --target-org ci-org --wait 10
           else
             echo "---- No changes to validate ----"
           fi
@@ -225,7 +225,7 @@ jobs:
         run: |
           if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
             echo "---- deploying added and modified metadata ----"
-            sf project deploy start --target-org ci-org --pre-destructive-changes delta/destructiveChanges/destructiveChanges.xml --manifest delta/destructiveChanges/package.xml
+            sf project deploy start --target-org ci-org --pre-destructive-changes delta/destructiveChanges/destructiveChanges.xml --manifest delta/destructiveChanges/package.xml --wait 10
           else
             echo "---- No changes to validate ----"
           fi
@@ -240,7 +240,7 @@ jobs:
           
           if grep -q '<types>' delta/package/package.xml ; then
             echo "---- Deploying added and modified metadata ----"
-            sf project deploy start --source-dir delta/force-app --target-org ci-org --test-level RunSpecifiedTests --tests ${{ env.apex_classes }}
+            sf project deploy start --source-dir delta/force-app --target-org ci-org --test-level RunSpecifiedTests --tests ${{ env.apex_classes }} --wait 10
           else
             echo "---- No changes to deploy ----"
           fi
@@ -255,7 +255,7 @@ jobs:
           
           if grep -q '<types>' delta/package/package.xml ; then
             echo "---- Deploying added and modified metadata ----"
-            sf project deploy start --source-dir delta/force-app --target-org ci-org
+            sf project deploy start --source-dir delta/force-app --target-org ci-org --wait 10
           else
             echo "---- No changes to deploy ----"
           fi
@@ -265,7 +265,7 @@ jobs:
         run: |
           if grep -q '<types>' destructiveChanges/postDestructiveChanges.xml ; then
             echo "---- deploying Destructive Changes ----"
-            sf project deploy start --target-org ci-org --post-destructive-changes destructiveChanges/postDestructiveChanges.xml --manifest destructiveChanges/package.xml
+            sf project deploy start --target-org ci-org --post-destructive-changes destructiveChanges/postDestructiveChanges.xml --manifest destructiveChanges/package.xml --wait 10
           else
             echo "---- No changes to validate ----"
           fi
