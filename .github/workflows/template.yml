@@ -211,7 +211,7 @@ jobs:
           fi
 
       - name: Validate The Code to Salesforce
-        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' && (env.apex_classes == '' or env.apex_classes == null ) }}
+        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' && (env.apex_classes == '' || env.apex_classes == null ) }}
         run: |
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
