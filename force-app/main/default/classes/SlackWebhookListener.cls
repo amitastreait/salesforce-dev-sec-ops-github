@@ -28,11 +28,9 @@ global without sharing class SlackWebhookListener {
 
         // Compare the request_signature with the slackSignature
         if (requestSignature.equals(slackSignature)) {
-            // The request is authenticated
-            // Write the complete code here
+            System.System.debug(System.LoggingLevel.DEBUG, 'Signagure verified');
         } else {
-            // The request is not authenticated
-            // Handle the unauthorized request
+            System.System.debug(System.LoggingLevel.WARN, 'Signagure Not verified');
         }
     }
 
@@ -45,7 +43,7 @@ global without sharing class SlackWebhookListener {
         Blob requestTimestampBlob = Blob.valueOf(requestTimestampString);
     
         // Generate a hash of the request_string using the app_signature and request_timestamp
-        Blob requestSignatureBlob = Crypto.generateMac('HmacSHA256', Blob.valueOf(requestString), Blob.valueOf(''));
+        Blob requestSignatureBlob = Crypto.generateMac('HmacSHA256', Blob.valueOf(requestString), appSignatureBlob );
     
         // Convert the request_signature to a hexadecimal string
         String requestSignature = EncodingUtil.convertToHex(requestSignatureBlob);
