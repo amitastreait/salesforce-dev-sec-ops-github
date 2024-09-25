@@ -139,6 +139,7 @@ jobs:
         run: |
           echo "${{ github.event.pull_request.body }}"  >> pr_body.txt
           python PRBODY_TESTCLASS.py > output.txt
+          cat output.txt
           echo "apex_classes=$(cat output.txt)" >> $GITHUB_ENV
 
       - name: Check if apex_classes has a value
@@ -197,7 +198,21 @@ jobs:
           fi
       
       - name: Validate The Code to Salesforce
-        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' && env.apex_classes != 'No Apex classes found' }}
+        run: |
+          echo ${{ github.event_name }}
+          echo ${{ github.event.action }}
+          echo ${{ github.event.pull_request.merged }}
+
+          if grep -q '<types>' delta/package/package.xml ; then
+            echo "---- validating added and modified metadata ----"
+            sf project deploy validate --source-dir delta/force-app --target-org ci-org --test-level RunSpecifiedTests --tests ${{ env.apex_classes }}
+          else
+            echo "---- No changes to validate ----"
+          fi
+
+      - name: Validate The Code to Salesforce
+        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' && env.apex_classes == 'No Apex classes found' }}
         run: |
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
