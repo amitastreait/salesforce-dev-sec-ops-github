@@ -139,6 +139,7 @@ jobs:
         run: |
           echo "${{ github.event.pull_request.body }}"  >> pr_body.txt
           python PRBODY_TESTCLASS.py > output.txt
+          cat output.txt
           echo "apex_classes=$(cat output.txt)" >> $GITHUB_ENV
 
       - name: Check if apex_classes has a value
@@ -197,7 +198,7 @@ jobs:
           fi
       
       - name: Validate The Code to Salesforce
-        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' && env.apex_classes != '' }}
+        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' && env.apex_classes != 'No Apex classes found' }}
         run: |
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
@@ -211,7 +212,7 @@ jobs:
           fi
 
       - name: Validate The Code to Salesforce
-        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' && (env.apex_classes == '' || env.apex_classes == null ) }}
+        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' && env.apex_classes == 'No Apex classes found' }}
         run: |
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
