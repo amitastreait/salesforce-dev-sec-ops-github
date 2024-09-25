@@ -7,8 +7,8 @@ public class SlackWebhookListenerTest {
             App_Id__c = 'TEST_APP_ID',
             App_Signature__c = 'TEST_APP_SIGNATURE'
         );
+        //insert slackApp;
         insert slackApp;
-
         // Set up a mock RestRequest and RestResponse
         RestRequest req = new RestRequest();
         RestResponse res = new RestResponse();

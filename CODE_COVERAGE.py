@@ -34,11 +34,12 @@ def calculate_coverage(file_path):
         print(f"\n Build Failed! The following classes have less than {coverage_threshold}% code coverage: ")
         for class_name, coverage in failed_classes:
             print(f"  - {class_name}: {coverage:.2f}%")
-        sys.exit(1)
+        sys.exit(1) # break the pipeline
     else:
         print(f"\n Overall Code Coverage: {overall_coverage:.2f}% ")
 
 # Main method that runs automatically
 if __name__ == "__main__":
+    ## coverage/test-result-codecoverage.json
     file_path = 'test-result-codecoverage.json'  # Replace with your actual file path
     calculate_coverage(file_path)

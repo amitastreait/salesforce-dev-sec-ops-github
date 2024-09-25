@@ -39,6 +39,8 @@ jobs:
     env:
       PR_BODY: ${{ github.event.pull_request.body }}
       NULL_VAR: ''
+      TEST_LEVEL: RunSpecifiedTests
+      APEX_CLASS_RUN: SlackWebhookListenerTest
 
     steps:
       - name: "Print the Information"
@@ -46,6 +48,7 @@ jobs:
           echo ${{ github.event }}
           echo ${{ github.event.action }}
           echo ${{ github.ref }}
+          echo ${{ env.TEST_LEVEL }}
         
       - name: Checkout Code
         uses: actions/checkout@v4.1.7
@@ -67,7 +70,7 @@ jobs:
           mkdir reports
           echo "Folder is created"
           
-          sf scanner run --format html --target force-app/main/default/classes --engine pmd,pmd-appexchange --category Design,Best Practices, Code Style,Performance,Security,Documentation, Error Prone --outfile reports/scan-reports.html  
+          sf scanner run --format html --target force-app/main/default/classes --engine pmd,pmd-appexchange --category Design,Best Practices, Code Style,Performance,Security,Documentation, Error Prone --outfile reports/scan-reports.html
           # echo "Starting the scan in sarif format"
           
           # sf scanner run --format sarif --target force-app/main/default/classes --engine pmd,pmd-appexchange --category Design,Best Practices, Code Style,Performance,Security,Documentation, Error Prone --outfile reports/scan-reports.sarif --severity-threshold=3 
@@ -76,6 +79,7 @@ jobs:
       
       ## Upload the report results as artifacts
       - name: Upload a Salesforce CLI Scan Report
+        if: always()
         id: upload-reports
         uses: actions/upload-artifact@v4.4.0
         with:
@@ -130,10 +134,6 @@ jobs:
         run: |
           python CODE_COVERAGE.py
 
-      - name: Fail the build if code coverage is less than 80%
-        if: failure()
-        run: echo "Build failed due to low code coverage"
-
       - name: Run the extractor script
         id: extract_classes
         run: |
@@ -161,6 +161,7 @@ jobs:
         with:
           args: >
             -Dsonar.apex.coverage.reportPath=test-result-codecoverage.json
+            -Dsonar.verbose=true
       
       - name: Upload code coverage for Apex to Codecov.io
         id: upload-coverage
@@ -189,7 +190,8 @@ jobs:
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
         run: |
           if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
-            echo "---- validating added and modified metadata ----"
+            echo "---- validating Destructive Changes ----"
+            sf project deploy validate --target-org ci-org --pre-destructive-changes delta/destructiveChanges/destructiveChanges.xml --manifest delta/destructiveChanges/package.xml
           else
             echo "---- No changes to validate ----"
           fi
@@ -213,7 +215,7 @@ jobs:
         run: |
           if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
             echo "---- deploying added and modified metadata ----"
-            sf project deploy validate --target-org ci-org --pre-destructive-changes delta/destructiveChanges/destructiveChanges.xml --manifest delta/destructiveChanges/package.xml
+            sf project deploy start --target-org ci-org --pre-destructive-changes delta/destructiveChanges/destructiveChanges.xml --manifest delta/destructiveChanges/package.xml
           else
             echo "---- No changes to validate ----"
           fi
@@ -231,6 +233,16 @@ jobs:
             sf project deploy start --source-dir delta/force-app --target-org ci-org
           else
             echo "---- No changes to deploy ----"
+          fi
+
+      - name: Deploy Post Destructive Changes
+        if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
+        run: |
+          if grep -q '<types>' destructiveChanges/postDestructiveChanges.xml ; then
+            echo "---- deploying Destructive Changes ----"
+            sf project deploy start --target-org ci-org --post-destructive-changes destructiveChanges/postDestructiveChanges.xml --manifest destructiveChanges/package.xml
+          else
+            echo "---- No changes to validate ----"
           fi
 
 ## If the event is PR [opened, edited, reoped] - Validate the change

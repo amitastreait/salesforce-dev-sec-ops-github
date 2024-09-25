@@ -22,7 +22,7 @@ jobs:
         id: files
         run: |
           # Get the list of modified files
-          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }})
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.head.sha }} ${{ github.sha }})
           echo "changed_files=$CHANGED_FILES" >> $GITHUB_ENV
 
       # Filter only Apex class files (ending with .cls)
@@ -30,7 +30,7 @@ jobs:
         id: apex_classes
         run: |
           # Filtering only .cls files (Apex classes)
-          APEX_CLASSES=$(echo "$CHANGED_FILES" | grep -E '\.cls$')
+          # APEX_CLASSES=$(echo "$CHANGED_FILES" | grep -E '\.cls$')
           echo "apex_classes=$APEX_CLASSES" >> $GITHUB_ENV
 
       # Filter only Apex test classes (ending with Test.cls)
@@ -38,7 +38,7 @@ jobs:
         id: apex_test_classes
         run: |
           # Filtering only test classes (ending with Test.cls)
-          APEX_TEST_CLASSES=$(echo "$APEX_CLASSES" | grep -E 'Test\.cls$')
+          # APEX_TEST_CLASSES=$(echo "$APEX_CLASSES" | grep -E 'Test\.cls$')
           echo "apex_test_classes=$APEX_TEST_CLASSES" >> $GITHUB_ENV
 
       # Check if any Apex test class files are modified
