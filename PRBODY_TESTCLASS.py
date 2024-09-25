@@ -14,7 +14,7 @@ def extract_apex_classes(file_path):
         return apex_classes_string  # Return as a string
     else:
         print("No Apex classes found")
-        return "No Apex classes found"
+        return ''
 
 # Main method that runs automatically
 if __name__ == "__main__":

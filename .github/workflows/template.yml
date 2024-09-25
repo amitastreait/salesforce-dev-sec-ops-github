@@ -197,7 +197,21 @@ jobs:
           fi
       
       - name: Validate The Code to Salesforce
-        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' && env.apex_classes != '' }}
+        run: |
+          echo ${{ github.event_name }}
+          echo ${{ github.event.action }}
+          echo ${{ github.event.pull_request.merged }}
+
+          if grep -q '<types>' delta/package/package.xml ; then
+            echo "---- validating added and modified metadata ----"
+            sf project deploy validate --source-dir delta/force-app --target-org ci-org --test-level RunSpecifiedTests --tests ${{ env.apex_classes }}
+          else
+            echo "---- No changes to validate ----"
+          fi
+
+      - name: Validate The Code to Salesforce
+        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' && (env.apex_classes == '' or env.apex_classes == null ) }}
         run: |
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
