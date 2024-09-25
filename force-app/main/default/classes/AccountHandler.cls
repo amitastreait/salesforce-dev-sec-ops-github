@@ -8,7 +8,6 @@ public with sharing class AccountHandler {
     public static void sleep() {
         System.debug('Hello');
         /* Generate the code to create the Account Record*/
-
         Account acc = new Account();
         acc.Name = 'PantherSchools.com';
         insert acc;

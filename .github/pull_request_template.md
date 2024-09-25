@@ -36,3 +36,9 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - [ ] I have added tests that prove my fix is effective or that my feature works
 - [ ] New and existing unit tests pass locally with my changes
 - [ ] Any dependent changes have been merged and published in downstream modules
+
+### Update the Test Class to run
+Add the test classe comma separated or remove the line if you do not want the test to be run
+
+## Validation of the Code OR Deployment of Code
+APEX TEST CLASS TO RUN [RUN:AccountHandlerTest,AccountTriggerTest,SlackWebhookListenerTest]

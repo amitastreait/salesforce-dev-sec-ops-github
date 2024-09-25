@@ -1,0 +1,22 @@
+# .github/workflows/first_workflow.yml
+name: First Workflow
+
+on: 
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+    branches:
+      - main
+
+jobs: 
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+  
+    - name: Build
+      run: echo "Building the project..."
