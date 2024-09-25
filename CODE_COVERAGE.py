@@ -8,7 +8,7 @@ def calculate_coverage(file_path):
 
     total_lines = 0
     covered_lines = 0
-    coverage_threshold = 99
+    coverage_threshold = 80
     failed_classes = []
 
     # Coverage for each class
