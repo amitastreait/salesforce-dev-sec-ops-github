@@ -220,6 +220,16 @@ jobs:
             echo "---- No changes to validate ----"
           fi
 
+      - name: Validate Post Destructive Changes
+        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+        run: |
+          if grep -q '<types>' destructiveChanges/postDestructiveChanges.xml ; then
+            echo "---- deploying Destructive Changes ----"
+            sf project deploy start --target-org ci-org --post-destructive-changes destructiveChanges/postDestructiveChanges.xml --manifest destructiveChanges/package.xml --wait 10
+          else
+            echo "---- No changes to validate ----"
+          fi
+
       - name: Deploy Pre Destructive Changes
         if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
         run: |
