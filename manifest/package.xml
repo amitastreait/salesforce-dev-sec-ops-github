@@ -5,6 +5,10 @@
 		<name>ApexPage</name>
 	</types>
 	<types>
+		<members>CommunitiesLandingController</members>
+		<name>ApexClass</name>
+	</types>
+	<types>
 		<members>*</members>
 		<name>ContentAsset</name>
 	</types>
