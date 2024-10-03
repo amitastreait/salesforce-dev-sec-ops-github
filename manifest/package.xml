@@ -16,5 +16,9 @@
 		<members>*</members>
 		<name>Network</name>
 	</types>
+	<types>
+		<members>SNA_Oy66J_sf_default_cdn_PSSupport1</members>
+		<name>StaticResource</name>
+	</types>
 	<version>60.0</version>
 </Package>
