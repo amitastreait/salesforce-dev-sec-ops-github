@@ -3,6 +3,8 @@
 	<types>
 		<members>CommunitiesLandingController</members>
 		<members>CommunitiesLandingControllerTest</members>
+		<members>CommunitiesSelfRegConfirmController</members>
+		<members>CommunitiesSelfRegConfirmControllerTest</members>
 		<members>CommunitiesSelfRegController</members>
 		<members>CommunitiesSelfRegControllerTest</members>
 		<name>ApexClass</name>
@@ -10,6 +12,7 @@
 	<types>
 		<members>CommunitiesLanding</members>
 		<members>CommunitiesSelfReg</members>
+		<members>CommunitiesSelfRegConfirm</members>
 		<name>ApexPage</name>
 	</types>
 	<types>
