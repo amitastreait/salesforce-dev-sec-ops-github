@@ -4,6 +4,7 @@ public with sharing class AccountHandler {
     }
     public static void flush() {
         System.debug('Hello');
+        System.debug('Hello');
     }
     public static void sleep() {
         System.debug('Hello');

@@ -1,22 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
 	<types>
-		<members>AccountHandler</members>
-		<members>AccountHandlerTest</members>
-		<members>AccountTriggerTest</members>
-		<members>AssetTriggerHandler</members>
-		<members>AssetTriggerHandlerTest</members>
-		<members>AssetTriggerHelper</members>
-		<members>AssetTriggerTest</members>
-		<members>CaseTriggerHandler</members>
-		<members>CaseTriggerHandlerTest</members>
-		<members>GeoCodeService</members>
-		<members>GeoCodeServiceTest</members>
-		<members>MyFirstApexClass</members>
-		<members>MyFirstApexClassTest</members>
-		<members>SuperSortTest</members>
-		<members>superSort</members>
+		<members>CommunitiesLandingController</members>
+		<members>CommunitiesLandingControllerTest</members>
+		<members>CommunitiesSelfRegConfirmController</members>
+		<members>CommunitiesSelfRegConfirmControllerTest</members>
+		<members>CommunitiesSelfRegController</members>
+		<members>CommunitiesSelfRegControllerTest</members>
 		<name>ApexClass</name>
+	</types>
+	<types>
+		<members>CommunitiesLanding</members>
+		<members>CommunitiesSelfReg</members>
+		<members>CommunitiesSelfRegConfirm</members>
+		<name>ApexPage</name>
+	</types>
+	<types>
+		<members>*</members>
+		<name>ContentAsset</name>
+	</types>
+	<types>
+		<members>*</members>
+		<name>CustomSite</name>
+	</types>
+	<types>
+		<members>*</members>
+		<name>ExperienceBundle</name>
+	</types>
+	<types>
+		<members>*</members>
+		<name>Network</name>
+	</types>
+	<types>
+		<members>SNA_Oy66J_sf_default_cdn_PSSupport1</members>
+		<name>StaticResource</name>
 	</types>
 	<version>60.0</version>
 </Package>
