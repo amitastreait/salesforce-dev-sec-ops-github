@@ -157,6 +157,7 @@
     <nameField>
         <label>OPS Customer Name</label>
         <type>Text</type>
+        <!-- <type>Text</type> -->
     </nameField>
     <pluralLabel>OPS Customers</pluralLabel>
     <searchLayouts></searchLayouts>
