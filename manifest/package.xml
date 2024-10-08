@@ -1,52 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
 	<types>
-		<members>AccountHandler</members>
-		<members>AccountHandlerTest</members>
-		<members>AccountTriggerTest</members>
-		<members>AssetTriggerHandler</members>
-		<members>AssetTriggerHandlerTest</members>
-		<members>AssetTriggerHelper</members>
-		<members>AssetTriggerTest</members>
-		<members>CaseTriggerHandler</members>
-		<members>CaseTriggerHandlerTest</members>
-		<members>GeoCodeService</members>
-		<members>GeoCodeServiceTest</members>
-		<members>MyFirstApexClass</members>
-		<members>MyFirstApexClassTest</members>
-		<members>SuperSortTest</members>
-		<members>superSort</members>
+		<members>CommunitiesLandingController</members>
+		<members>CommunitiesLandingControllerTest</members>
+		<members>CommunitiesSelfRegConfirmController</members>
+		<members>CommunitiesSelfRegConfirmControllerTest</members>
+		<members>CommunitiesSelfRegController</members>
+		<members>CommunitiesSelfRegControllerTest</members>
 		<name>ApexClass</name>
 	</types>
 	<types>
-		<members>OpsCustomerTrigger</members>
-		<members>SAPAccountTrigger</members>
-		<name>ApexTrigger</name>
-	</types>
-	<types>
-		<members>OPSCustomer__c</members>
-		<members>SAPAccount__e</members>
-		<members>Slack_App__c</members>
-		<members>Stripe_Customer__c</members>
-		<name>CustomObject</name>
+		<members>CommunitiesLanding</members>
+		<members>CommunitiesSelfReg</members>
+		<members>CommunitiesSelfRegConfirm</members>
+		<name>ApexPage</name>
 	</types>
 	<types>
 		<members>*</members>
-		<name>Flow</name>
+		<name>ContentAsset</name>
 	</types>
 	<types>
-		<members>OPSCustomer__c-OPS Customer Layout</members>
-		<members>Slack_App__c-Slack App Layout</members>
-		<members>Stripe_Customer__c-Stripe Customer Layout</members>
-		<name>Layout</name>
+		<members>*</members>
+		<name>CustomSite</name>
 	</types>
 	<types>
-		<members>DevSecOps_PermissionSet</members>
-		<name>PermissionSet</name>
+		<members>*</members>
+		<name>ExperienceBundle</name>
 	</types>
 	<types>
-		<members>PantherSchools - DevOps User</members>
-		<name>Profile</name>
+		<members>*</members>
+		<name>Network</name>
+	</types>
+	<types>
+		<members>SNA_Oy66J_sf_default_cdn_PSSupport1</members>
+		<name>StaticResource</name>
 	</types>
 	<version>60.0</version>
 </Package>
