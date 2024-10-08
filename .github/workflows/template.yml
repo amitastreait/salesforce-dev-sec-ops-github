@@ -44,6 +44,7 @@ jobs:
 
     steps:
       - name: "Print the Information"
+        id: print-info
         run: |
           echo ${{ github.event }}
           echo ${{ github.event.action }}
@@ -51,19 +52,23 @@ jobs:
           echo ${{ env.TEST_LEVEL }}
         
       - name: Checkout Code
+        id: checkout-code
         uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
       
       - name: npm install
+        id: npm-install
         run: echo "running npm install"
         ## Install Saleforce CLI
       
       - name: Install Salesforce CLI
+        id: install-sf-cli
         run: npm install @salesforce/cli --global 
       
       # Set up Python
       - name: Set up Python
+        id: setup-puthon
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
@@ -120,36 +125,42 @@ jobs:
 
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v3
+        id: upload-scrif-file
         with:
           sarif_file: pmd-report.sarif
       
       - name: Fail build if there are violations
         if: steps.pmd_scan.outputs.violations != 0
+        id: Fail-build-if-there-are-violations
         run: |
           echo "PMD Violatons ${{steps.pmd_scan.outputs.violations}} "
         ## exit 1
 
       - name: Decrypt the server.key.enc file
+        id: decrypt-the-file
         run: openssl enc -nosalt -aes-256-cbc -d -in ${{ secrets.ENCRYPTED_KEY_FILE }} -out ${{ secrets.JWT_KEY_FILE }} -base64 -K ${{ secrets.KEY }} -iv ${{ secrets.IV }}
       
       - name: Authorize with Salesforce org
+        id: authenticate-salesforce
         run: |
           echo ${{vars.ORG_URL}}
           sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias ci-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
 
       - name: Run the Apex Test Classes
+        id: run-sf-cli-scanner
         run: |
           sf apex run test --target-org ci-org --test-level RunLocalTests --code-coverage --result-format human -d ./ --wait 10
 
       ## Check the code coverage -- START
       - name: Run Apex Coverage Check
+        id: check-for-the-code-coverage
         run: |
           python CODE_COVERAGE.py
       ## Check the code coverage -- END
 
       ## Scan the code using SonarCloud
       - name: SonarCloud Scan
-        id: sonar
+        id: sonar-cloud-scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
@@ -168,14 +179,13 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Install SFDX Git delta aka SGD 
+        id: install-sfdx-git-delta
         run: |
           echo 'y' | sf plugins install sfdx-git-delta
-      
-      - name: Create delta folder 
-        run: |
           mkdir delta
       
       - name: Generate the delta file for deployment
+        id: generate-delta-for-deployment
         run: |
           sf sgd source delta --to "HEAD" --from "HEAD~1" --output "./delta" --generate-delta --ignore-whitespace --ignore .sgdignore
           echo "--- package.xml generated with added and modified metadata ---"
@@ -183,6 +193,7 @@ jobs:
           cat delta/destructiveChanges/destructiveChanges.xml
 
       - name: Validate Pre Destructive Changes
+        id: ValidatePreDestructiveChanges
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
         run: |
           if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
@@ -193,6 +204,7 @@ jobs:
           fi
       
       - name: Validate The Code to Salesforce
+        id: ValidateTheCodetoSalesforce
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' && env.apex_classes != 'No Apex classes found' }}
         run: |
           echo ${{ github.event_name }}
@@ -207,6 +219,7 @@ jobs:
           fi
 
       - name: Validate The Code to Salesforce
+        id: ValidateTheCodetoSalesforceWOTestClass
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' && env.apex_classes == 'No Apex classes found' }}
         run: |
           echo ${{ github.event_name }}
@@ -221,6 +234,7 @@ jobs:
           fi
 
       - name: Validate Post Destructive Changes
+        id: ValidatePostDestructiveChanges
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
         run: |
           if grep -q '<types>' destructiveChanges/postDestructiveChanges.xml ; then
@@ -231,6 +245,7 @@ jobs:
           fi
 
       - name: Deploy Pre Destructive Changes
+        id: DeployPreDestructiveChanges
         if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
         run: |
           if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
@@ -243,6 +258,7 @@ jobs:
       - name: Deploy the Code
         ## Best is to have a separate Org for validation purpose
         if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' && env.apex_classes != 'No Apex classes found' }}
+        id: DeploytheCode
         run: |
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
@@ -257,6 +273,7 @@ jobs:
 
       - name: Deploy the Code
         ## Best is to have a separate Org for validation purpose
+        id: DeploytheCodeWOTestClass
         if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' && env.apex_classes == 'No Apex classes found' }}
         run: |
           echo ${{ github.event_name }}
@@ -271,6 +288,7 @@ jobs:
           fi
 
       - name: Deploy Post Destructive Changes
+        id: DeployPostDestructiveChanges
         if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
         run: |
           if grep -q '<types>' destructiveChanges/postDestructiveChanges.xml ; then
@@ -279,6 +297,16 @@ jobs:
           else
             echo "---- No changes to validate ----"
           fi
+      
+      - name: Post to Slack with Steps
+        uses: act10ns/slack@v2
+        with: 
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          config: .github/config/slack.yml
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
       
       ## Post to Slack
       - name: Post to Slack
@@ -289,6 +317,29 @@ jobs:
           message: Salesforce Deployment/Validation is ${{ job.status }} for *<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|build>*
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Post to a Slack channel
+        id: slack
+        if: always()
+        uses: slackapi/slack-github-action@v1.24.0
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        with:
+          # For posting a rich message using Block Kit
+          payload: |
+            {
+              "text": "GitHub Action build result: ${{ job.status }} \n ${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "To see the complete output of the github actions, click *<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|here>*"
+                  }
+                }
+              ]
+            }
   
 
 ## If the event is PR [opened, edited, reoped] - Validate the change
